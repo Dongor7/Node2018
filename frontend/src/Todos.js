@@ -51,8 +51,11 @@ export default class Todos extends Component {
         if(newTodo) {
 
             axios.post('http://localhost:4000/v1/todos/', {
-                body: { description: newTodo, done: false }
-            })
+                    todo: {
+                        description: newTodo,
+                        done: false
+                    }
+                })
                 .then(res => {})
                 .catch(error => this.setState({ error: error.message }));
 

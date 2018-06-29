@@ -7,6 +7,7 @@ async function findAll(ctx) {
 
 async function create(ctx) {
   const newTodo = new Todo(ctx.request.body);
+  console.log('Controller', newTodo);
   const savedTodo = await newTodo.save();
   ctx.body = savedTodo;
 }

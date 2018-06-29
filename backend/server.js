@@ -31,9 +31,9 @@ app.use(respond());
 // API routes
 require('./routes')(router);
 app.use(router.routes());
-app.use(require('koa-static')('./build'));
 app.use(router.allowedMethods());
+app.use(require('koa-static')('./build'));
 
-mongoose.connect('mongodb://<Dongor7>:<123qwe>@ds161520.mlab.com:61520/full');
+mongoose.connect('mongodb://Dongor7:123qwe@ds161520.mlab.com:61520/full');
 
 module.exports = app;

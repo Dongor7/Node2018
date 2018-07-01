@@ -18,5 +18,7 @@
   "bugs": {
     "url": "https://github.com/Dongor7/Node2018/issues"
   },
-  "homepage": "https://github.com/Dongor7/Node2018#readme"
+  "homepage": "https://github.com/Dongor7/Node2018#readme",
+  "dependencies": {
+  }
 }

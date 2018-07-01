@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import 'bulma/css/bulma.css';
 
-const Todo = ({ todo, id }) => (
+const Todo = ({ todo, id, deleteTodo }) => (
 <div className="box todo-item level is-mobile">
     <div className="level-left">
         <label className={`level-item todo-description ${todo.done && 'completed'}`}>
@@ -11,7 +11,7 @@ const Todo = ({ todo, id }) => (
         </label>
     </div>
     <div className="level-right">
-        <a className="delete level-item" onClick={() => {}}>Delete</a>
+        <a className="delete level-item" onClick={() => deleteTodo(id)}>Delete</a>
     </div>
 </div>
 );
@@ -33,9 +33,6 @@ export default class Todos extends Component {
 
         axios.get('http://localhost:4000/v1/todos/')
             .then(res => {
-
-                console.log(res.data);
-
                 this.setState({
                     isLoading: false,
                     todos: res.data
@@ -44,7 +41,7 @@ export default class Todos extends Component {
             .catch(error => this.setState({ error: error.message }));
     }
 
-    addTodo(event) {
+    addTodo = (event) => {
         event.preventDefault();
         const { newTodo, todos } = this.state;
 
@@ -64,7 +61,20 @@ export default class Todos extends Component {
                 todos: todos.concat({ description: newTodo, done: false })
             })
         }
-    }
+    };
+
+    deleteTodo = (id) => {
+
+        const { todos } = this.state;
+
+        axios.delete(`http://localhost:4000/v1/todos/${id}`)
+            .then(res => {})
+            .catch(error => this.setState({ error: error.message }));
+
+        this.setState({
+            todos: todos.filter((todo) => todo._id !== id)
+        })
+    };
 
     render () {
 
@@ -79,7 +89,7 @@ export default class Todos extends Component {
                 <h1 className="title white">Todos</h1>
                 <div className="error">{error}</div>
 
-                <form className="form" onSubmit={this.addTodo.bind(this)}>
+                <form className="form" onSubmit={this.addTodo}>
                     <div className="field has-addons" style={{ justifyContent: 'center' }}>
                         <div className="control">
                             <input className="input"
@@ -97,7 +107,7 @@ export default class Todos extends Component {
                 </form>
 
                 <div className="container todo-list">
-                    {todos.map((todo) => <Todo key={todo._id} id={todo._id} todo={todo}/> )}
+                    {todos.map((todo, i) => <Todo key={i} id={todo._id} todo={todo} deleteTodo={this.deleteTodo}/> )}
                     <div className="white">
                         Total: {total} , Complete: {complete} , Incomplete: {incomplete}
                     </div>

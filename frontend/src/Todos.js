@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import { connect } from 'react-redux';
+import { addTodo, fetchTodos } from "./actions/todos";
+import { FETCH_TODOS } from "./actions/todos";
+//import axios from 'axios';
 import 'bulma/css/bulma.css';
 
 const Todo = ({ todo, id, deleteTodo }) => (
@@ -16,19 +19,16 @@ const Todo = ({ todo, id, deleteTodo }) => (
 </div>
 );
 
-export default class Todos extends Component {
+class Todos extends Component {
     state = {
-        newTodo: '',
-        todos: [],
-        error: '',
-        isLoading: false
+        newTodo: ''
     };
 
-    componentDidMount() {
+    /*componentDidMount() {
         this.fetchTodos();
-    }
+    }*/
 
-    fetchTodos() {
+    /*fetchTodos() {
         this.setState({ isLoading: true });
 
         axios.get('http://localhost:4000/v1/todos/')
@@ -39,31 +39,32 @@ export default class Todos extends Component {
                 })
             })
             .catch(error => this.setState({ error: error.message }));
-    }
+    }*/
 
-    addTodo = (event) => {
+    /*addTodo = (event) => {
         event.preventDefault();
-        const { newTodo, todos } = this.state;
+        const { newTodo } = this.state;
 
         if(newTodo) {
 
-            axios.post('http://localhost:4000/v1/todos/', {
-                    todo: {
-                        description: newTodo,
-                        done: false
-                    }
-                })
+            const todo = {
+                description: newTodo,
+                done: false
+            };
+
+            axios.post('http://localhost:4000/v1/todos/', { todo })
                 .then(res => {})
                 .catch(error => this.setState({ error: error.message }));
 
-            this.setState({
-                newTodo: '',
-                todos: todos.concat({ description: newTodo, done: false })
-            })
-        }
-    };
+            this.props.addTodo(todo)
 
-    deleteTodo = (id) => {
+            this.setState({
+                newTodo: ''
+            });
+        }
+    }; */
+
+    /*deleteTodo = (id) => {
 
         const { todos } = this.state;
 
@@ -74,11 +75,15 @@ export default class Todos extends Component {
         this.setState({
             todos: todos.filter((todo) => todo._id !== id)
         })
-    };
+    };*/
+
+    componentDidMount() {
+        this.props.dispatch(FETCH_TODOS);
+    }
 
     render () {
 
-        let { todos, newTodo, isLoading, error } = this.state;
+        let { todos, newTodo, isLoading, error } = this.props;
 
         const total = todos.length;
         const complete = todos.filter(todo => todo.done).length;
@@ -89,7 +94,7 @@ export default class Todos extends Component {
                 <h1 className="title white">Todos</h1>
                 <div className="error">{error}</div>
 
-                <form className="form" onSubmit={this.addTodo}>
+                <form className="form" onSubmit={(event) => { event.preventDefault(); this.props.addTodo(this.state.newTodo)}}>
                     <div className="field has-addons" style={{ justifyContent: 'center' }}>
                         <div className="control">
                             <input className="input"
@@ -116,3 +121,19 @@ export default class Todos extends Component {
         )
     }
 }
+
+const mapStateToProps = (state) => {
+
+    return {
+        todos: state.todosReducer.todos.items,
+        isLoading: state.todosReducer.todos.isLoading,
+        error: state.todosReducer.todos.isLoading
+    }
+};
+
+const mapDispatchToProps = {
+    addTodo,
+    fetchTodos
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Todos);

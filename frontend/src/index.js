@@ -6,9 +6,7 @@ import createSagaMiddleware from 'redux-saga';
 
 import rootReducer from './redusers';
 import rootSagas from './sagas';
-import './index.css';
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
@@ -21,4 +19,3 @@ ReactDOM.render(
     </Provider>,
     document.getElementById('root')
 );
-registerServiceWorker();

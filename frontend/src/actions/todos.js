@@ -1,5 +1,7 @@
 export const ADD_TODO = 'ADD_TODO';
 export const FETCH_TODOS = 'FETCH_TODOS';
+export const FETCH_TODOS_SUCCESS = 'FETCH_TODOS_SUCCESS';
+export const FETCH_TODOS_FAIL = 'FETCH_TODOS_SUCCESS';
 
 export function addTodo(todo) {
     return {
@@ -14,5 +16,19 @@ export function addTodo(todo) {
 export function fetchTodos() {
     return {
         type: FETCH_TODOS
+    }
+}
+
+export function fetchTodosSuccess(todos) {
+    return {
+        type: FETCH_TODOS_SUCCESS,
+        todos
+    }
+}
+
+export function fetchTodosFail(message) {
+    return {
+        type: FETCH_TODOS_SUCCESS,
+        message
     }
 }

@@ -19,6 +19,7 @@
     "url": "https://github.com/Dongor7/Node2018/issues"
   },
   "homepage": "https://github.com/Dongor7/Node2018#readme",
-  "dependencies": {
+  "devDependencies": {
+    "concurrently": "3.6.0"
   }
 }

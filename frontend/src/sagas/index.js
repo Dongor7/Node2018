@@ -1,33 +1,19 @@
-import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
-import { FETCH_TODOS } from "../actions/todos";
+import axios from 'axios';
+import { call, put, takeLatest} from 'redux-saga/effects';
+import { FETCH_TODOS, fetchTodosSuccess, fetchTodosFail } from "../actions/todos";
 
 function* fetchTodos() {
     try {
-        const data = yield call(
-            () => {
-
-                let todos;
-
-                axios.get('http://localhost:4000/v1/todos/')
-                    .then(res => {
-                        todos = res.data
-                    })
-                    .catch(error => this.setState({ error: error.message }));
-            }
-        );
-        yield put({type: FETCH_TODOS, data});
+        const response = yield call(() => axios.get('http://localhost:4000/v1/todos/'));
+        //throw new Error("Some error");
+        yield put(fetchTodosSuccess(response.data));
     } catch (e) {
-        console.log(e.message);
+        yield put(fetchTodosFail(e.message));
     }
 }
 
-/*
-  Starts fetchUser on each dispatched `USER_FETCH_REQUESTED` action.
-  Allows concurrent fetches of user.
-*/
 function* mySaga() {
-    yield takeEvery(FETCH_TODOS, fetchTodos);
+    yield takeLatest(FETCH_TODOS, fetchTodos);
 }
-
 
 export default mySaga;

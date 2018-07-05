@@ -1,9 +1,9 @@
-import { ADD_TODO, FETCH_TODOS } from '../actions/todos';
+import { ADD_TODO, FETCH_TODOS, FETCH_TODOS_SUCCESS, FETCH_TODOS_FAIL } from '../actions/todos';
 
 let initialState = {
     todos: {
         items: [],
-        isLoading: false,
+        isLoading: true,
         error: ''
     }
 };
@@ -15,13 +15,28 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 todos: {
+                    ...state.todos,
                     items: state.todos.items.concat(action.todo)
                 }
             };
         case FETCH_TODOS:
+            return state;
+        case FETCH_TODOS_SUCCESS:
             return {
                 ...state,
-                todos: action.todos
+                todos: {
+                    ...state.todos,
+                    items: action.todos,
+                    isLoading: false
+                }
+            };
+        case FETCH_TODOS_FAIL:
+            return {
+                ...state,
+                todos: {
+                    ...state.todos,
+                    error: action.message
+                }
             };
         default:
             return state;

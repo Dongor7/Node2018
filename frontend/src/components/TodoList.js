@@ -17,7 +17,7 @@ class Todos extends Component {
 
         let { todos, newTodo, isLoading, error } = this.props;
 
-        console.log('PROPS', this.props);
+        console.log('PROPS: ', this.props);
 
         const total = todos.length;
         const complete = todos.filter(todo => todo.done).length;

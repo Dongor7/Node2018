@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addTodo, fetchTodos } from "../actions/todos";
+import { addTodo, fetchTodos, deleteTodo } from "../actions/todos";
 import Todo from "./Todo";
 import 'bulma/css/bulma.css';
 
 class Todos extends Component {
-    state = {
-        newTodo: ''
-    };
 
     componentDidMount() {
         this.props.fetchTodos();
@@ -17,7 +14,7 @@ class Todos extends Component {
 
         let { todos, newTodo, isLoading, error } = this.props;
 
-        console.log('PROPS: ', this.props);
+        console.log('newTodo: ', newTodo);
 
         const total = todos.length;
         const complete = todos.filter(todo => todo.done).length;
@@ -46,7 +43,7 @@ class Todos extends Component {
                 </form>
 
                 <div className="container todo-list">
-                    {todos.map((todo, i) => <Todo key={i} id={todo._id} todo={todo} deleteTodo={() => {}}/> )}
+                    {todos.map((todo, i) => <Todo key={i} id={todo._id} todo={todo} deleteTodo={() => { this.props.deleteTodo(todo.id) }}/> )}
                     <div className="white">
                         Total: {total} , Complete: {complete} , Incomplete: {incomplete}
                     </div>
@@ -63,13 +60,14 @@ const mapStateToProps = (state) => {
     return {
         todos: state.todosReducer.todos.items,
         isLoading: state.todosReducer.todos.isLoading,
-        error: state.todosReducer.todos.isLoading
+        error: state.todosReducer.todos.error
     }
 };
 
 const mapDispatchToProps = {
     addTodo,
-    fetchTodos
+    fetchTodos,
+    deleteTodo
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Todos);

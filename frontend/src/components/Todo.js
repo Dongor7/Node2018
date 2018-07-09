@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Todo = ({ todo, id, deleteTodo }) => (
+const Todo = ({ todo, deleteTodo }) => (
     <div className="box todo-item level is-mobile">
         <div className="level-left">
             <label className={`level-item todo-description ${todo.done && 'completed'}`}>
@@ -9,7 +9,7 @@ const Todo = ({ todo, id, deleteTodo }) => (
             </label>
         </div>
         <div className="level-right">
-            <a className="delete level-item" onClick={() => deleteTodo(id)}>Delete</a>
+            <a className="delete level-item" onClick={() => deleteTodo(todo._id)}>Delete</a>
         </div>
     </div>
 );

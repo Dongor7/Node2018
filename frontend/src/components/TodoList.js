@@ -14,7 +14,7 @@ class Todos extends Component {
 
         let { todos, newTodo, isLoading, error } = this.props;
 
-        console.log('newTodo: ', newTodo);
+        console.log('PROPS: ', this.props);
 
         const total = todos.length;
         const complete = todos.filter(todo => todo.done).length;
@@ -43,7 +43,7 @@ class Todos extends Component {
                 </form>
 
                 <div className="container todo-list">
-                    {todos.map((todo, i) => <Todo key={i} id={todo._id} todo={todo} deleteTodo={() => { this.props.deleteTodo(todo.id) }}/> )}
+                    {todos.map((todo, i) => <Todo key={i} todo={todo} deleteTodo={this.props.deleteTodo}/> )}
                     <div className="white">
                         Total: {total} , Complete: {complete} , Incomplete: {incomplete}
                     </div>

@@ -40,13 +40,20 @@ export default function (state = initialState, action) {
                 ...state,
                 todos: {
                     ...state.todos,
+                    items: [
+                        {description: '1', complete: false},
+                        {description: '2', complete: false}
+                    ],
                     error: action.message
                 }
             };
         case DELETE_TODO:
             return {
-                ...state.todos,
-                todos: state.todos.filter((todo) => todo.id !== action.id)
+                ...state,
+                todos: {
+                    ...state.todos,
+                    items: state.todos.items.filter((todo) => todo._id !== action.id)
+                }
             };
         default:
             return state;
